@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webamp - Reproductor Retro</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a; /* Fondo oscuro */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      background-color: transparent; /* Fondo transparente */
+    }
+  </style>
+</head>
+<body>
+  <!-- Contenedor para Webamp -->
+  <div id="app"></div>
+
+  <!-- Script de Webamp con carga diferida -->
+  <script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js" defer></script>
+
+  <!-- Script para inicializar Webamp -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tracks = [
+        {
+          metaData: {
+            artist: "DJ Mike Llama",
+            title: "Llama Whippin' Intro",
+          },
+          url: "https://cdn.jsdelivr.net/gh/captbaritone/webamp@43434d82cfe0e37286dbbe0666072dc3190a83bc/mp3/llama-2.91.mp3",
+          duration: 5.322286,
+        },
+        {
+  metaData: {
+    title: "I Wanna be Somebody",
+    artist: "W.A.S.P.",
+  },
+  url: "\WASPIwannabesomebody.mp3",
+  duration: 214.750, // Duración en segundos
+},
+      
+      ];
+      
+      const webamp = new Webamp({
+        initialTracks: tracks,
+        initialSkin: {
+          url: "\Luis.wsz",  
+        },
+      });
+
+      webamp.renderWhenReady(document.getElementById("app"))
+        .then(() => console.log("Webamp ha sido renderizado correctamente."))
+        .catch((error) => console.error("Error al renderizar Webamp:", error));
+    });
+  </script>
+  <!-- "https://cdn.jsdelivr.net/gh/captbaritone/webamp@43434d82cfe0e37286dbbe0666072dc3190a83bc/skins/base-2.91.wsz"-->
+</body>
+</html>
