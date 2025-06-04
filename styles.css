@@ -1,0 +1,143 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #0f0f1a;
+    color: #ffffff;
+    overflow: hidden;
+    height: 100vh;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+}
+
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 20;
+    text-align: left;
+    padding: 0;
+    background: transparent;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.header p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    color: #ffffff;
+}
+
+#sponsors-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    perspective: 1000px;
+    z-index: 10;
+}
+
+.sponsor {
+    position: absolute;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards, float 3s infinite linear;
+    text-shadow: 
+        0 0 5px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(255, 255, 255, 0.5);
+    cursor: default;
+    transition: transform 0.3s ease;
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+    z-index: 11;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background-color: rgba(15, 15, 26, 0.7);
+    backdrop-filter: blur(3px);
+    white-space: nowrap;
+}
+
+.sponsor.animate-out {
+    animation: fadeOutRotate 0.5s forwards;
+}
+
+.sponsor.animate-in {
+    animation: fadeInRotate 0.5s forwards, float 3s infinite linear;
+}
+
+.sponsor:hover {
+    transform: scale(1.1) translateZ(20px);
+    z-index: 15;
+    background-color: rgba(15, 15, 26, 0.9);
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInRotate {
+    0% {
+        opacity: 0;
+        transform: rotateY(90deg) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: rotateY(0) scale(1);
+    }
+}
+
+@keyframes fadeOutRotate {
+    0% {
+        opacity: 1;
+        transform: rotateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: rotateY(-90deg) scale(0.8);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateZ(0);
+    }
+    50% {
+        transform: translateY(-40px) translateZ(20px);
+    }
+}
+
+.error-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ff5555;
+    font-size: 1.5rem;
+    text-align: center;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
