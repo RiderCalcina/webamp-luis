@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Webamp - Reproductor Retro</title>
   <style>
     /* Estilos para el fondo */
@@ -18,13 +18,24 @@
       justify-content: center;
       align-items: center;
       height: 100vh; /* Altura completa de la ventana */
+      
+      /* Optimizaciones para móvil (App nativa) */
+      overflow: hidden; /* Evita que la pantalla se mueva */
+      touch-action: none; /* Previene el scrolling nativo o zoom con gestos */
+      -webkit-user-select: none; /* Previene selección de texto en iOS/Android */
+      user-select: none;
+      -webkit-tap-highlight-color: transparent; /* Quita el cuadro azul al tocar */
     }
 
-    /* Contenedor del reproductor */
+    /* Contenedor principal */
     #app {
-      width: 300px; /* Ancho del reproductor */
-      height: 400px; /* Alto del reproductor */
-      background-color: transparent; /* Fondo transparente */
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: scale(1.1); /* Ligero aumento para mejorar los toques en pantallas pequeñas */
     }
   </style>
 </head>
@@ -32,11 +43,10 @@
   <!-- Contenedor para Webamp -->
   <div id="app"></div>
 
-  <!-- Script de Webamp con carga diferida -->
-  <script src="https://unpkg.com/webamp@1.4.2/built/webamp.bundle.min.js" defer></script>
+  <!-- Script para inicializar Webamp con soporte visual Butterchurn (Milkdrop) -->
+  <script type="module">
+    import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
 
-  <!-- Script para inicializar Webamp -->
-  <script>
     document.addEventListener("DOMContentLoaded", () => {
       const tracks = [
         {
@@ -65,7 +75,7 @@
       });
 
       webamp.renderWhenReady(document.getElementById("app"))
-        .then(() => console.log("Webamp ha sido renderizado correctamente."))
+        .then(() => console.log("Webamp con Milkdrop ha sido renderizado correctamente."))
         .catch((error) => console.error("Error al renderizar Webamp:", error));
     });
   </script>
