@@ -50,39 +50,50 @@
       /* Aumento del 20% adicional para mejorar la visibilidad */
     }
 
-    /* Estilo para el link Rider */
-    #rider-link {
+    /* Estilo para el contenedor de links */
+    .bottom-links {
         position: fixed;
-        bottom: 20px;
+        bottom: 15%;
         left: 20px;
         z-index: 9999;
-        color: #00e5ff; /* Cyan neón que encaja con el estilo retro/tecnológico */
-        text-decoration: none;
-        font-family: 'Courier New', Courier, monospace;
-        font-weight: bold;
-        font-size: 1.2rem;
-        text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
-        transition: all 0.3s ease;
-        padding: 5px 10px;
-        border: 1px solid transparent;
-        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
         background: rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(5px);
+        padding: 5px 15px;
+        border-radius: 4px;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: bold;
+        font-size: 1.1rem;
     }
 
-    #rider-link:hover {
+    .bottom-links a {
+        color: #00e5ff;
+        text-decoration: none;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+        transition: all 0.3s ease;
+    }
+
+    .bottom-links span {
+        color: #fff;
+        opacity: 0.5;
+    }
+
+    .bottom-links a:hover {
         color: #fff;
         text-shadow: 0 0 20px #00e5ff;
-        border-color: #00e5ff;
-        background: rgba(0, 229, 255, 0.1);
-        transform: translateY(-2px);
     }
   </style>
 </head>
 
 <body>
-  <!-- Link Rider en la esquina -->
-  <a href="https://qwertyaserty.com/" id="rider-link" target="_blank" rel="noopener noreferrer">Rider</a>
+  <!-- Links en la parte inferior -->
+  <div class="bottom-links">
+    <a href="https://qwertyaserty.com/" target="_blank" rel="noopener noreferrer">Rider</a>
+    <span>/</span>
+    <a href="#" onclick="window.location.reload(); return false;">Actualizar reproductor</a>
+  </div>
 
   <!-- Contenedor para Webamp -->
   <div id="app"></div>
