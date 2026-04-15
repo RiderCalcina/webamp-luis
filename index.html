@@ -46,13 +46,44 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transform: scale(1.1);
-      /* Ligero aumento para mejorar los toques en pantallas pequeñas */
+      transform: scale(1.3);
+      /* Aumento del 20% adicional para mejorar la visibilidad */
+    }
+
+    /* Estilo para el link Rider */
+    #rider-link {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        z-index: 9999;
+        color: #00e5ff; /* Cyan neón que encaja con el estilo retro/tecnológico */
+        text-decoration: none;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+        transition: all 0.3s ease;
+        padding: 5px 10px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+    }
+
+    #rider-link:hover {
+        color: #fff;
+        text-shadow: 0 0 20px #00e5ff;
+        border-color: #00e5ff;
+        background: rgba(0, 229, 255, 0.1);
+        transform: translateY(-2px);
     }
   </style>
 </head>
 
 <body>
+  <!-- Link Rider en la esquina -->
+  <a href="https://qwertyaserty.com/" id="rider-link" target="_blank" rel="noopener noreferrer">Rider</a>
+
   <!-- Contenedor para Webamp -->
   <div id="app"></div>
 
@@ -103,8 +134,107 @@
         },
       });
 
+      // --- Media Session API Implementation ---
+      const updateMediaSession = (track) => {
+        if ('mediaSession' in navigator && track) {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: track.title || "Canción desconocida",
+            artist: track.artist || "Artista",
+            album: "Webamp Retro",
+            artwork: [
+              { src: 'bgluis.jpg', sizes: '96x96', type: 'image/jpeg' },
+              { src: 'bgluis.jpg', sizes: '128x128', type: 'image/jpeg' },
+              { src: 'bgluis.jpg', sizes: '192x192', type: 'image/jpeg' },
+              { src: 'bgluis.jpg', sizes: '256x256', type: 'image/jpeg' },
+              { src: 'bgluis.jpg', sizes: '384x384', type: 'image/jpeg' },
+              { src: 'bgluis.jpg', sizes: '512x512', type: 'image/jpeg' },
+            ]
+          });
+        }
+      };
+
+      // --- Prevenir suspensión de AudioContext ---
+      const silencer = document.createElement('audio');
+      silencer.loop = true;
+      silencer.src = "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA="; // Silencio corto
+
+      // Truco del "Wake Lock" y "Silent Audio" para evitar que el sistema mate el proceso
+      let wakeLock = null;
+      async function requestWakeLock() {
+        try {
+          if ('wakeLock' in navigator) {
+            wakeLock = await navigator.wakeLock.request('screen');
+          }
+          // Reproducir silencio para mantener el thread de audio vivo en móviles
+          silencer.play().catch(e => console.log("Silent audio blocked"));
+        } catch (err) {
+          console.error(`${err.name}, ${err.message}`);
+        }
+      }
+
+      // Manejar cambios de pista
+      webamp.onTrackDidChange((track) => {
+        if (track && track.metaData) {
+          updateMediaSession(track.metaData);
+        }
+        // Intentar activar Wake Lock al cambiar de pista (inicio de reproducción)
+        requestWakeLock();
+      });
+
+      // Nota: webamp@2 no soporta .on("play"), usamos el cambio de pista para el estado inicial.
+      // Para un control más fino del estado de reproducción (play/pause) en MediaSession:
+      if (webamp.store) {
+        let lastStatus = null;
+        webamp.store.subscribe(() => {
+          const status = webamp.store.getState().media.status;
+          if (status !== lastStatus) {
+            lastStatus = status;
+            if ('mediaSession' in navigator) {
+              navigator.mediaSession.playbackState = status === "PLAYING" ? "playing" : "paused";
+            }
+            if (status === "PLAYING") {
+              requestWakeLock();
+            } else {
+              if (wakeLock) {
+                wakeLock.release();
+                wakeLock = null;
+              }
+              silencer.pause();
+            }
+          }
+        });
+      }
+
+      // Configurar controles de Media Session
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', () => webamp.play());
+        navigator.mediaSession.setActionHandler('pause', () => webamp.pause());
+        navigator.mediaSession.setActionHandler('previoustrack', () => webamp.previous());
+        navigator.mediaSession.setActionHandler('nexttrack', () => webamp.next());
+        navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+          // Webamp no tiene seek nativo directo por segundos, pero podríamos implementarlo
+        });
+        navigator.mediaSession.setActionHandler('seekforward', (details) => {
+          // Opcional
+        });
+      }
+
+      // Manejar cambios de visibilidad
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          // Reanudar AudioContext si el navegador lo suspendió
+          if (webamp && webamp.store) {
+            // Webamp no expone AudioContext directamente de forma fácil, 
+            // pero suele recuperarse al interactuar o al volver a ser visible.
+          }
+        }
+      });
+
       webamp.renderWhenReady(document.getElementById("app"))
-        .then(() => console.log("Webamp con Milkdrop ha sido renderizado correctamente."))
+        .then(() => {
+          console.log("Webamp con Milkdrop ha sido renderizado correctamente.");
+        })
         .catch((error) => console.error("Error al renderizar Webamp:", error));
     });
   </script>
