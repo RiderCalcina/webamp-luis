@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Webamp - Reproductor Retro</title>
   <style>
     /* Estilos para el fondo */
@@ -10,21 +12,30 @@
       margin: 0;
       padding: 0;
       font-family: Arial, sans-serif;
-      background-image: url('bgrnd.jpg'); /* Ruta de la imagen de fondo */
-      background-size: cover; /* Ajusta la imagen para cubrir toda la pantalla */
-      background-position: center; /* Centra la imagen */
-      background-repeat: no-repeat; /* Evita que la imagen se repita */
+      background-image: url('bgrnd.jpg');
+      /* Ruta de la imagen de fondo */
+      background-size: cover;
+      /* Ajusta la imagen para cubrir toda la pantalla */
+      background-position: center;
+      /* Centra la imagen */
+      background-repeat: no-repeat;
+      /* Evita que la imagen se repita */
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh; /* Altura completa de la ventana */
-      
+      height: 100vh;
+      /* Altura completa de la ventana */
+
       /* Optimizaciones para móvil (App nativa) */
-      overflow: hidden; /* Evita que la pantalla se mueva */
-      touch-action: none; /* Previene el scrolling nativo o zoom con gestos */
-      -webkit-user-select: none; /* Previene selección de texto en iOS/Android */
+      overflow: hidden;
+      /* Evita que la pantalla se mueva */
+      touch-action: none;
+      /* Previene el scrolling nativo o zoom con gestos */
+      -webkit-user-select: none;
+      /* Previene selección de texto en iOS/Android */
       user-select: none;
-      -webkit-tap-highlight-color: transparent; /* Quita el cuadro azul al tocar */
+      -webkit-tap-highlight-color: transparent;
+      /* Quita el cuadro azul al tocar */
     }
 
     /* Contenedor principal */
@@ -35,10 +46,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transform: scale(1.1); /* Ligero aumento para mejorar los toques en pantallas pequeñas */
+      transform: scale(1.1);
+      /* Ligero aumento para mejorar los toques en pantallas pequeñas */
     }
   </style>
 </head>
+
 <body>
   <!-- Contenedor para Webamp -->
   <div id="app"></div>
@@ -65,6 +78,20 @@
           url: "WASPIwannabesomebody.mp3", // Asegúrate de que la ruta sea correcta
           duration: 214.750, // Duración en segundos
         },
+        {
+          metaData: {
+            title: "Rock Antenne",
+            artist: "Radio",
+          },
+          url: "https://stream.rockantenne.de/rockantenne/stream/mp3"
+        },
+        {
+          metaData: {
+            title: "Heavy Metal",
+            artist: "Radio",
+          },
+          url: "https://s1-webradio.rockantenne.de/heavy-metal/stream/mp3"
+        }
       ];
 
       const webamp = new Webamp({
@@ -80,4 +107,5 @@
     });
   </script>
 </body>
+
 </html>
