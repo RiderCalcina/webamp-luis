@@ -69,37 +69,69 @@
     }
 
     .bottom-links a {
-        flex: 1; /* Para que tengan el mismo tamaño proporcional */
-        padding: 10px 12px; /* Más pequeños */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        padding: 0;
         background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(0, 229, 255, 0.4);
         color: #00e5ff;
         text-decoration: none;
-        border-radius: 10px;
-        font-family: 'Inter', sans-serif;
-        font-weight: 600;
-        font-size: 0.7rem; /* Fuente reducida */
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        border-radius: 50%;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        font-size: 1.3rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         text-align: center;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-        white-space: nowrap; /* Evita saltos de línea */
+        position: relative;
     }
 
     .bottom-links a:hover {
         background: rgba(0, 229, 255, 0.15);
         border-color: #00e5ff;
         color: #fff;
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 10px 30px rgba(0, 229, 255, 0.3);
+        transform: scale(1.1) rotate(360deg);
+        box-shadow: 0 10px 30px rgba(0, 229, 255, 0.4);
         text-shadow: 0 0 15px #00e5ff;
     }
 
+    /* Tooltip estilizado */
+    .bottom-links a::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 130%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: rgba(0, 0, 0, 0.9);
+        color: #00e5ff;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        font-family: 'Inter', sans-serif;
+        text-transform: none;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        border: 1px solid rgba(0, 229, 255, 0.3);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .bottom-links a:hover::after {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
     .bottom-links a:active {
-        transform: translateY(0) scale(0.98);
+        transform: scale(0.95);
     }
 
     /* Ocultar el separador si existe */
@@ -110,10 +142,9 @@
 </head>
 
 <body>
-  <!-- Links en la parte inferior transformados en botones -->
+  <!-- Botón de actualización único con símbolo y tooltip -->
   <div class="bottom-links">
-    <a href="#" onclick="window.location.reload(); return false;">Actualizar Reproductor</a>
-    <a href="https://qwertyaserty.com/" target="_blank" rel="noopener noreferrer">Rider</a>
+    <a href="#" onclick="window.location.reload(); return false;" data-tooltip="Actualizar Reproductor">↻</a>
   </div>
 
   <!-- Contenedor para Webamp -->
